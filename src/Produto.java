@@ -1,5 +1,7 @@
 
 import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Produto {
 
@@ -73,5 +75,46 @@ public class Produto {
         NumberFormat moeda = NumberFormat.getCurrencyInstance();
 
         return String.format("NOME: " + descricao + ": " + moeda.format(valorDeVenda()));
+    }
+
+    static Produto criarDoTexto(String linha) {
+        Produto novoProduto = null;
+        var formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String[] atributos = linha.split(";");
+        int tipo = Integer.parseInt(atributos[0]);
+        String descricao = atributos[1];
+        double precoCusto = Double.parseDouble(atributos[2]);
+        double margemLucro = Double.parseDouble(atributos[3]);
+        if (tipo == 1) {
+            novoProduto = new ProdutoNaoPerecivel(descricao, precoCusto, margemLucro);
+        } else {
+            LocalDate dataDeValidade = LocalDate.parse(atributos[4], formatoData);
+            novoProduto = new ProdutoPerecivel(descricao, precoCusto, margemLucro, dataDeValidade);
+        }
+
+        return novoProduto;
+    }
+
+    /**
+     * Igualdade de produtos: caso possuam o mesmo nome/descrição.
+     *
+     * @param obj Outro produto a ser comparado
+     * @return booleano true/false conforme o parâmetro possua a descrição igual
+     * ou não a este produto.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        Produto outro = (Produto) obj;
+        return this.descricao.toLowerCase().equals(outro.descricao.toLowerCase());
+    }
+
+    /**
+     * Gera uma linha de texto a partir dos dados do produto
+     *
+     * @return Uma string no formato "tipo;
+     * descrição;preçoDeCusto;margemDeLucro;[dataDeValidade]"
+     */
+    public String gerarDadosTexto() {
+        return this.descricao + ";" + this.precoCusto + ";" + this.margemLucro + ";";
     }
 }
