@@ -16,10 +16,10 @@ public class ProdutoPerecivel extends Produto {
 
     public double valorVenda() {
         if (dataDeValidade.isAfter(LocalDate.now().plusDays(prazoDesconto))){
-            return super.valorVenda();
+            return super.valorDeVenda();
         }
         else {
-            return super.valorVenda() - (super.valorVenda() * desconto);
+            return super.valorDeVenda() - (super.valorDeVenda() * desconto);
         }
     }
 
