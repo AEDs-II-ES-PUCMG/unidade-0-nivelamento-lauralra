@@ -59,7 +59,7 @@ public class Comercio {
      * problemas de leitura.
      */
     static Produto[] lerProdutos(String nomeArquivoDados) {
-        Produto[] vetorProdutos;
+        Produto[] vetorProdutos;    
         /*Ler a primeira linha do arquivoDados contendo a quantidade de produtos armazenados no arquivo.
 Instanciar o vetorProdutos com o tamanho necessário para acomodar todos os produtos do arquivo + o
 espaço reserva MAX_NOVOS_PRODUTOS. Após isso, ler uma após a outra o restante das linhas do arquivo,

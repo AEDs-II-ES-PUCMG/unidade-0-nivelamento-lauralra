@@ -1,3 +1,4 @@
+package models;
 
 import java.text.NumberFormat;
 import java.time.LocalDate;
