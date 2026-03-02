@@ -1,4 +1,7 @@
-package src.test;
+package test;
+
+import models.Produto;
+import models.ProdutoPerecivel;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
