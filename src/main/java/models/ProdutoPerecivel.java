@@ -16,8 +16,8 @@ public class ProdutoPerecivel extends Produto {
         this.dataDeValidade = dataDeValidade;
     }
 
-    public double valorVenda() {
-        if (dataDeValidade.isAfter(LocalDate.now().plusDays(prazoDesconto))){
+        public double valorVenda() {
+        if (dataDeValidade.isBefore(LocalDate.now().plusDays(prazoDesconto))){
             return super.valorDeVenda();
         }
         else {

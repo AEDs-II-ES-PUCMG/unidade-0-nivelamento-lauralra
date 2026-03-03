@@ -1,15 +1,16 @@
 package models;
 
 import java.nio.charset.Charset;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
-
 
 public class Comercio {
 
     static final int MAX_NOVOS_PRODUTOS = 10;
-    
+
     static String nomeArquivoDados;
-    
+
     //Scanner para leitura do teclado
     static Scanner teclado;
 
@@ -60,7 +61,7 @@ public class Comercio {
      * problemas de leitura.
      */
     static Produto[] lerProdutos(String nomeArquivoDados) {
-        Produto[] vetorProdutos;    
+        Produto[] vetorProdutos;
         /*Ler a primeira linha do arquivoDados contendo a quantidade de produtos armazenados no arquivo.
 Instanciar o vetorProdutos com o tamanho necessário para acomodar todos os produtos do arquivo + o
 espaço reserva MAX_NOVOS_PRODUTOS. Após isso, ler uma após a outra o restante das linhas do arquivo,
@@ -73,8 +74,14 @@ criarDoTexto()). Cada objeto Produto instanciado será armazenado no vetorProdut
      * Lista todos os produtos cadastrados, numerados, um por linha
      */
     static void listarTodosOsProdutos() {
-        /*Percorrer o vetor de produtosCadastrados, escrevendo na tela os dados de cada um (utilizar o método
-toString() já implementado).*/
+        cabecalho();
+        System.out.println("\nPRODUTOS CADASTRADOS:");
+        for (int i = 0; i < produtosCadastrados.length; i++) {
+            if (produtosCadastrados[i] != null) {
+                System.out.println(String.format("%02d - %s",
+                        (i + 1), produtosCadastrados[i].toString()));
+            }
+        }
     }
 
     /**
@@ -101,6 +108,50 @@ e imprimir na tela seus dados.*/
         /*Implementar a sub-rotina de exibir o novo menu para cadastro de novo produto, ler os dados necessários
 conforme o tipo desejado, criar o objeto correspondente, salvando-o no vetor de produtosCadastrados e
 incrementando a variável de controle da quantidade de produtos.*/
+        int tipo;
+
+        System.out.println("Cadastro de novo produto");
+        System.out.println("1 - Produto não perecivel");
+        System.out.println("2 - Produto perecivel");
+        tipo = teclado.nextInt();
+        teclado.nextLine();
+
+        System.out.print("Descrição: ");
+        String descricao = teclado.nextLine();
+
+        System.out.print("Preço de custo: ");
+        double precoCusto = teclado.nextDouble();
+
+        System.out.print("Margem de lucro: ");
+        double margemLucro = teclado.nextDouble();
+        teclado.nextLine();
+
+        Produto novoProduto = null;
+
+
+        if (tipo == 1) {
+            novoProduto = new ProdutoNaoPerecivel(descricao, precoCusto, margemLucro);
+        } else if (tipo == 2) {
+
+            System.out.println("Data de validade (dd/mm/yyyy): ");
+            String dataValidade = teclado.nextLine();
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+            novoProduto = new ProdutoPerecivel(descricao, precoCusto, margemLucro, LocalDate.parse(dataValidade));
+
+        } else {
+            System.err.println("Opção inválida");
+            return;
+        }
+
+        if (quantosProdutos < produtosCadastrados.length) {
+            produtosCadastrados[quantosProdutos] = novoProduto;
+            quantosProdutos++;
+            System.out.println("Produto cadastrado com sucesso");
+        } else {
+            System.out.println("Erro: Vetor de produtos está cheio");
+        }
+
     }
 
     /**
