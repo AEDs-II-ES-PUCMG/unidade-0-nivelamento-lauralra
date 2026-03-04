@@ -19,7 +19,7 @@ public class Comercio {
     static Produto[] produtosCadastrados;
 
     //Quantidade produtos cadastrados atualmente no vetor
-    static int quantosProdutos;
+    static int quantosProdutos = 0;
 
     // Gera um efeito de pausa na CLI. Espera por um enter para continuar
     static void pausa() {
@@ -66,7 +66,7 @@ Instanciar o vetorProdutos com o tamanho necessário para acomodar todos os prod
 espaço reserva MAX_NOVOS_PRODUTOS. Após isso, ler uma após a outra o restante das linhas do arquivo,
 convertendo, a cada leitura de linha, seus dados em objetos do tipo Produto (utilizar o método
 criarDoTexto()). Cada objeto Produto instanciado será armazenado no vetorProdutos.*/
-    static Produto[] lerProdutos(String arquivoDados) {
+    static Produto[] lerProdutos(String nomeArquivoDados) {
 
         /*Ler a primeira linha do arquivoDados contendo a quantidade de produtos armazenados no arquivo.
 Instanciar o vetorProdutos com o tamanho necessário para acomodar todos os produtos do arquivo + o
@@ -79,7 +79,7 @@ criarDoTexto()). Cada objeto Produto instanciado será armazenado no vetorProdut
         int i;
 
         try {
-            File arquivo = new File(arquivoDados);
+            File arquivo = new File(nomeArquivoDados);
             Scanner leitor = new Scanner (arquivo);
 
             int n = Integer.parseInt(leitor.nextLine().trim());
@@ -98,8 +98,8 @@ criarDoTexto()). Cada objeto Produto instanciado será armazenado no vetorProdut
         }
 
         catch (Exception e){
-            System.err.println("Erro ao ler arquivo");
-            return new Produto[0];
+            System.err.println("Erro ao ler arquivo. Inicializando um novo vetor vazio");
+            return new Produto[MAX_NOVOS_PRODUTOS];
         }
 
         return vetorProdutos;
@@ -133,12 +133,12 @@ e imprimir na tela seus dados.*/
         System.out.println("Insira o nome do produto que deseja buscar: ");
         String descricao = teclado.nextLine();
 
-        Produto buscado = new Produto(descricao, 0, 0);
+        Produto buscado = new Produto(descricao, 0.01, 0.01);
 
         boolean encontrado = false;
 
 
-        for (i=0; i<produtosCadastrados.length; i++){
+        for (i=0; i<quantosProdutos; i++){
             if (produtosCadastrados[i].equals(buscado)){
                 System.out.println("Produto encontrado: " + produtosCadastrados[i].toString());
                 encontrado = true;
@@ -147,6 +147,7 @@ e imprimir na tela seus dados.*/
         if (!encontrado) {
             System.out.println("Produto não encontrado");
 
+        }
     }
 
     /**
@@ -182,19 +183,30 @@ incrementando a variável de controle da quantidade de produtos.*/
 
         Produto novoProduto = null;
 
+        try {
 
-        if (tipo == 1) {
-            novoProduto = new ProdutoNaoPerecivel(descricao, precoCusto, margemLucro);
-        } else if (tipo == 2) {
+            if (tipo == 1) {
+               novoProduto = new ProdutoNaoPerecivel(descricao, precoCusto, margemLucro);
+            } 
+            
+            else if (tipo == 2) {
 
-            System.out.println("Data de validade (dd/mm/yyyy): ");
-            String dataValidade = teclado.nextLine();
-            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                System.out.println("Data de validade (dd/mm/yyyy): ");
+                String dataValidade = teclado.nextLine();
+                DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-            novoProduto = new ProdutoPerecivel(descricao, precoCusto, margemLucro, LocalDate.parse(dataValidade, formato));
+                novoProduto = new ProdutoPerecivel(descricao, precoCusto, margemLucro, LocalDate.parse(dataValidade, formato));
 
-        } else {
-            System.err.println("Opção inválida");
+            } 
+
+            else {
+                System.err.println("Opção inválida");
+                return;
+            }
+        }
+
+        catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
             return;
         }
 
@@ -218,21 +230,6 @@ incrementando a variável de controle da quantidade de produtos.*/
         /*Você deve implementar aqui a lógica que abrirá um arquivo para escrita com o nome informado no
 parâmetro, percorrerá um por um todos os produtos existentes no vetor de produtosCadastrados, gerando
 uma linha de texto com os dados de cada objeto Produto, escrevendo-a no arquivo.*/
- try (PrintWriter escritor = new PrintWriter(new FileWriter(nomeArquivo))) {
-        // 1. Escreve a quantidade total de produtos na primeira linha
-        escritor.println(quantosProdutos);
-
-        // 2. Percorre o vetor e salva cada produto usando o formato CSV
-        for (int i = 0; i < quantosProdutos; i++) {
-            if (produtosCadastrados[i] != null) {
-                // Aqui chamamos um método que gera a linha: "P;Arroz;10.0;0.3;10/10/2024"
-                escritor.println(produtosCadastrados[i].gerarLinhaCSV());
-            }
-        }
-        System.out.println("Dados salvos com sucesso em " + nomeArquivo);
-    } catch (IOException e) {
-        System.err.println("Erro ao salvar o arquivo: " + e.getMessage());
-    }
     }
 
     public static void main(String[] args) throws Exception {
