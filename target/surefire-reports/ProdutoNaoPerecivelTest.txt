@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: ProdutoNaoPerecivelTest
 -------------------------------------------------------------------------------
-Tests run: 6, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 0.175 s <<< FAILURE! -- in ProdutoNaoPerecivelTest
-ProdutoNaoPerecivelTest.criarCorretamenteAPartirDeTexto -- Time elapsed: 0.091 s <<< FAILURE!
+Tests run: 6, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 0.166 s <<< FAILURE! -- in ProdutoNaoPerecivelTest
+ProdutoNaoPerecivelTest.criarCorretamenteAPartirDeTexto -- Time elapsed: 0.078 s <<< FAILURE!
 org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
@@ -15,8 +15,8 @@ org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
 
-ProdutoNaoPerecivelTest.criaDadosEmTextoCorretamente -- Time elapsed: 0.010 s <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <1;Produto teste;100.00;0.10> but was: <Produto teste;100.0;0.1;>
+ProdutoNaoPerecivelTest.criaDadosEmTextoCorretamente -- Time elapsed: 0.007 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <1;Produto teste;100.00;0.10> but was: <1;Produto teste;100.0;0.1;>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
 	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
