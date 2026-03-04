@@ -1,5 +1,6 @@
 package models;
 
+import java.io.File;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -60,13 +61,47 @@ public class Comercio {
      * @return Um vetor com os produtos carregados, ou vazio em caso de
      * problemas de leitura.
      */
-    static Produto[] lerProdutos(String nomeArquivoDados) {
-        Produto[] vetorProdutos;
+    /*Ler a primeira linha do arquivoDados contendo a quantidade de produtos armazenados no arquivo.
+Instanciar o vetorProdutos com o tamanho necessário para acomodar todos os produtos do arquivo + o
+espaço reserva MAX_NOVOS_PRODUTOS. Após isso, ler uma após a outra o restante das linhas do arquivo,
+convertendo, a cada leitura de linha, seus dados em objetos do tipo Produto (utilizar o método
+criarDoTexto()). Cada objeto Produto instanciado será armazenado no vetorProdutos.*/
+    static Produto[] lerProdutos(String arquivoDados) {
+
         /*Ler a primeira linha do arquivoDados contendo a quantidade de produtos armazenados no arquivo.
 Instanciar o vetorProdutos com o tamanho necessário para acomodar todos os produtos do arquivo + o
 espaço reserva MAX_NOVOS_PRODUTOS. Após isso, ler uma após a outra o restante das linhas do arquivo,
 convertendo, a cada leitura de linha, seus dados em objetos do tipo Produto (utilizar o método
 criarDoTexto()). Cada objeto Produto instanciado será armazenado no vetorProdutos.*/
+
+        Produto[] vetorProdutos;
+        vetorProdutos = new Produto[MAX_NOVOS_PRODUTOS];
+        int i;
+
+        try {
+            File arquivo = new File(arquivoDados);
+            Scanner leitor = new Scanner (arquivo);
+
+            int n = Integer.parseInt(leitor.nextLine().trim());
+
+            vetorProdutos = new Produto[n + MAX_NOVOS_PRODUTOS];
+
+            for (i=0; i<n; i++){
+                if (leitor.hasNextLine()){
+                    String linha = leitor.nextLine();
+                    vetorProdutos[i] = Produto.criarDoTexto(linha);
+                    quantosProdutos++;
+                }
+            }        
+            leitor.close();
+            
+        }
+
+        catch (Exception e){
+            System.err.println("Erro ao ler arquivo");
+            return new Produto[0];
+        }
+
         return vetorProdutos;
     }
 

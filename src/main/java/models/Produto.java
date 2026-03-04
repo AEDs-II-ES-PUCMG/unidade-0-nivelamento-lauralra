@@ -78,7 +78,7 @@ public class Produto {
         return String.format("NOME: " + descricao + ": " + moeda.format(valorDeVenda()));
     }
 
-    static Produto criarDoTexto(String linha) {
+    public static Produto criarDoTexto(String linha) {
         Produto novoProduto = null;
         var formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String[] atributos = linha.split(";");
