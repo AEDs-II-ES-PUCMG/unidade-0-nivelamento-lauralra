@@ -1,6 +1,9 @@
 package models;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -81,9 +84,8 @@ criarDoTexto()). Cada objeto Produto instanciado será armazenado no vetorProdut
         try {
             File arquivo = new File(nomeArquivoDados);
             Scanner leitor = new Scanner (arquivo);
-
+            // transforma a string de quantidade de produtos em int
             int n = Integer.parseInt(leitor.nextLine().trim());
-
             vetorProdutos = new Produto[n + MAX_NOVOS_PRODUTOS];
 
             for (i=0; i<n; i++){
@@ -230,6 +232,27 @@ incrementando a variável de controle da quantidade de produtos.*/
         /*Você deve implementar aqui a lógica que abrirá um arquivo para escrita com o nome informado no
 parâmetro, percorrerá um por um todos os produtos existentes no vetor de produtosCadastrados, gerando
 uma linha de texto com os dados de cada objeto Produto, escrevendo-a no arquivo.*/
+
+        try (PrintWriter escritor = new PrintWriter(new FileWriter(nomeArquivo))) {
+        
+        escritor.println(quantosProdutos);
+
+        for (int i = 0; i < quantosProdutos; i++) {
+
+            Produto p = produtosCadastrados[i];
+
+            if (p != null) {
+                escritor.println(p.gerarDadosTexto());
+            }
+        }
+        System.out.println("Produtos salvos com sucesso!");
+        
+        } 
+        
+        catch (IOException e) {
+            System.err.println("Erro ao salvar: " + e.getMessage());
+        }
+
     }
 
     public static void main(String[] args) throws Exception {
@@ -237,6 +260,8 @@ uma linha de texto com os dados de cada objeto Produto, escrevendo-a no arquivo.
         nomeArquivoDados = "dadosProdutos.csv";
         produtosCadastrados = lerProdutos(nomeArquivoDados);
         int opcao = -1;
+        System.out.println("DEBUG: Sistema carregou " + quantosProdutos + " produtos.");
+        System.out.println("DEBUG: Tamanho do vetor: " + produtosCadastrados.length);
         do {
             opcao = menu();
             switch (opcao) {

@@ -37,6 +37,6 @@ public class ProdutoPerecivel extends Produto {
 
     public String gerarDadosTexto(){
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return this.descricao + ";" + this.precoCusto + ";" + this.margemLucro + ";" + this.dataDeValidade.format(formato);
+        return "2;" + this.descricao + ";" + this.precoCusto + ";" + this.margemLucro + ";" + this.dataDeValidade.format(formato);
     }
 }

@@ -116,6 +116,6 @@ public class Produto {
      * descrição;preçoDeCusto;margemDeLucro;[dataDeValidade]"
      */
     public String gerarDadosTexto() {
-        return this.descricao + ";" + this.precoCusto + ";" + this.margemLucro + ";";
+        return "1;" + this.descricao + ";" + this.precoCusto + ";" + this.margemLucro + ";";
     }
 }
