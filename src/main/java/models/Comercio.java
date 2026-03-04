@@ -128,6 +128,25 @@ criarDoTexto()). Cada objeto Produto instanciado será armazenado no vetorProdut
         /*Ler do teclado a descrição (nome) do produto que o usuário deseja localizar, procurar no vetor de
 produtosCadastrados o produto em questão (utilizar o método equals() já implementado na classe Produto)
 e imprimir na tela seus dados.*/
+        int i;
+        cabecalho();
+        System.out.println("Insira o nome do produto que deseja buscar: ");
+        String descricao = teclado.nextLine();
+
+        Produto buscado = new Produto(descricao, 0, 0);
+
+        boolean encontrado = false;
+
+
+        for (i=0; i<produtosCadastrados.length; i++){
+            if (produtosCadastrados[i].equals(buscado)){
+                System.out.println("Produto encontrado: " + produtosCadastrados[i].toString());
+                encontrado = true;
+            }
+        }
+        if (!encontrado) {
+            System.out.println("Produto não encontrado");
+
     }
 
     /**
@@ -172,7 +191,7 @@ incrementando a variável de controle da quantidade de produtos.*/
             String dataValidade = teclado.nextLine();
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-            novoProduto = new ProdutoPerecivel(descricao, precoCusto, margemLucro, LocalDate.parse(dataValidade));
+            novoProduto = new ProdutoPerecivel(descricao, precoCusto, margemLucro, LocalDate.parse(dataValidade, formato));
 
         } else {
             System.err.println("Opção inválida");
@@ -199,6 +218,21 @@ incrementando a variável de controle da quantidade de produtos.*/
         /*Você deve implementar aqui a lógica que abrirá um arquivo para escrita com o nome informado no
 parâmetro, percorrerá um por um todos os produtos existentes no vetor de produtosCadastrados, gerando
 uma linha de texto com os dados de cada objeto Produto, escrevendo-a no arquivo.*/
+ try (PrintWriter escritor = new PrintWriter(new FileWriter(nomeArquivo))) {
+        // 1. Escreve a quantidade total de produtos na primeira linha
+        escritor.println(quantosProdutos);
+
+        // 2. Percorre o vetor e salva cada produto usando o formato CSV
+        for (int i = 0; i < quantosProdutos; i++) {
+            if (produtosCadastrados[i] != null) {
+                // Aqui chamamos um método que gera a linha: "P;Arroz;10.0;0.3;10/10/2024"
+                escritor.println(produtosCadastrados[i].gerarLinhaCSV());
+            }
+        }
+        System.out.println("Dados salvos com sucesso em " + nomeArquivo);
+    } catch (IOException e) {
+        System.err.println("Erro ao salvar o arquivo: " + e.getMessage());
+    }
     }
 
     public static void main(String[] args) throws Exception {

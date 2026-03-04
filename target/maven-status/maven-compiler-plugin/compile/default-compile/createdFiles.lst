@@ -1,0 +1,4 @@
+models\Comercio.class
+models\Produto.class
+models\ProdutoPerecivel.class
+models\ProdutoNaoPerecivel.class
