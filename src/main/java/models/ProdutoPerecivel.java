@@ -11,8 +11,8 @@ public class ProdutoPerecivel extends Produto {
 
     protected LocalDate dataDeValidade;
 
-    public ProdutoPerecivel(String descricao, double precoCusto, double margemLucro, LocalDate dataDeValidade) {
-        super(descricao, precoCusto, margemLucro);
+    public ProdutoPerecivel(String descricao, double precoCusto, double margemLucro, LocalDate dataDeValidade, int quantidadeEmEstoque) {
+        super(descricao, precoCusto, margemLucro, quantidadeEmEstoque);
         this.dataDeValidade = dataDeValidade;
     }
 
@@ -37,6 +37,6 @@ public class ProdutoPerecivel extends Produto {
 
     public String gerarDadosTexto(){
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return "2;" + this.descricao + ";" + this.precoCusto + ";" + this.margemLucro + ";" + this.dataDeValidade.format(formato);
+        return "2;" + this.descricao + ";" + this.precoCusto + ";" + this.margemLucro + ";" + this.dataDeValidade.format(formato) + ";" + this.quantidadeEmEstoque;
     }
 }

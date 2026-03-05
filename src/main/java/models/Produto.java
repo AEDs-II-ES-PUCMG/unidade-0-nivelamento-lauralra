@@ -10,6 +10,7 @@ public class Produto {
     protected String descricao;
     protected double precoCusto;
     protected double margemLucro;
+    protected int quantidadeEmEstoque;
 
     /**
      * Inicializador privado. Os valores default, em caso de erro, são: "Produto
@@ -19,12 +20,13 @@ public class Produto {
      * @param precoCusto Preço do produto (mínimo 0.01)
      * @param margemLucro Margem de lucro (mínimo 0.01)
      */
-    private void init(String desc, double precoCusto, double margemLucro) {
+    private void init(String desc, double precoCusto, double margemLucro, int quantidadeEmEstoque) {
 
         if ((desc.length() >= 3) && (precoCusto > 0.0) && (margemLucro > 0.0)) {
             descricao = desc;
             this.precoCusto = precoCusto;
             this.margemLucro = margemLucro;
+            this.quantidadeEmEstoque = quantidadeEmEstoque;
         } else {
             throw new IllegalArgumentException("Valores inválidos para os dados do produto.");
         }
@@ -38,8 +40,8 @@ public class Produto {
      * @param precoCusto Preço do produto (mínimo 0.01)
      * @param margemLucro Margem de lucro (mínimo 0.01)
      */
-    public Produto(String desc, double precoCusto, double margemLucro) {
-        init(desc, precoCusto, margemLucro);
+    public Produto(String desc, double precoCusto, double margemLucro, int quantidadeEmEstoque) {
+        init(desc, precoCusto, margemLucro, quantidadeEmEstoque);
     }
 
     /**
@@ -50,8 +52,8 @@ public class Produto {
      * @param desc Descrição do produto (mínimo de 3 caracteres)
      * @param precoCusto Preço do produto (mínimo 0.01)
      */
-    public Produto(String desc, double precoCusto) {
-        init(desc, precoCusto, MARGEM_PADRAO);
+    public Produto(String desc, double precoCusto, int quantidadeEmEstoque) {
+        init(desc, precoCusto, MARGEM_PADRAO, quantidadeEmEstoque);
     }
 
     /**
@@ -87,14 +89,40 @@ public class Produto {
         double precoCusto = Double.parseDouble(atributos[2]);
         double margemLucro = Double.parseDouble(atributos[3]);
         if (tipo == 1) {
-            novoProduto = new ProdutoNaoPerecivel(descricao, precoCusto, margemLucro);
+            int quantidadeEmEstoque = Integer.parseInt(atributos[4]);
+            novoProduto = new ProdutoNaoPerecivel(descricao, precoCusto, margemLucro, quantidadeEmEstoque);
         } else {
             LocalDate dataDeValidade = LocalDate.parse(atributos[4], formatoData);
-            novoProduto = new ProdutoPerecivel(descricao, precoCusto, margemLucro, dataDeValidade);
+            int quantidadeEmEstoque = Integer.parseInt(atributos[5]);
+            novoProduto = new ProdutoPerecivel(descricao, precoCusto, margemLucro, dataDeValidade, quantidadeEmEstoque);
         }
 
         return novoProduto;
     }
+
+
+    public boolean validacaoDisponibilidade(int quantProdutos, int quantidadeEmEstoque){
+
+        boolean disponivel = false;
+
+        if (quantProdutos <= quantidadeEmEstoque){
+            disponivel = true;
+            return disponivel;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public int reduzirEstoque(int quantProdutos, boolean produtoIncluso){
+        
+        if (produtoIncluso){
+            quantidadeEmEstoque = quantidadeEmEstoque - quantProdutos;
+        }
+
+        return quantidadeEmEstoque;
+    }
+
 
     /**
      * Igualdade de produtos: caso possuam o mesmo nome/descrição.
@@ -116,6 +144,6 @@ public class Produto {
      * descrição;preçoDeCusto;margemDeLucro;[dataDeValidade]"
      */
     public String gerarDadosTexto() {
-        return "1;" + this.descricao + ";" + this.precoCusto + ";" + this.margemLucro + ";";
+        return "1;" + this.descricao + ";" + this.precoCusto + ";" + this.margemLucro + ";" + this.quantidadeEmEstoque + ";";
     }
 }

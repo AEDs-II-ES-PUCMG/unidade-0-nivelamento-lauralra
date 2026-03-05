@@ -53,7 +53,7 @@ public class Comercio {
         return Integer.parseInt(teclado.nextLine());
     }
 
-    /**
+    /**if ()
      * Lê os dados de um arquivo texto e retorna um vetor de produtos. Arquivo
      * no formato N (quantiade de produtos) <br/>
      * tipo; descrição;preçoDeCusto;margemDeLucro;[dataDeValidade] <br/>
@@ -132,7 +132,7 @@ e imprimir na tela seus dados.*/
         System.out.println("Insira o nome do produto que deseja buscar: ");
         String descricao = teclado.nextLine();
 
-        Produto buscado = new Produto(descricao, 0.01, 0.01);
+        Produto buscado = new Produto(descricao, 0.01, 0.01, 0);
 
         boolean encontrado = false;
 
@@ -179,19 +179,25 @@ incrementando a variável de controle da quantidade de produtos.*/
         double margemLucro = teclado.nextDouble();
         teclado.nextLine();
 
+        System.out.print("Margem de lucro: ");
+        int quantidadeEmEstoque = teclado.nextInt();
+        teclado.nextLine();
+
         Produto novoProduto = null;
 
         try {
 
             if (tipo == 1) {
-                novoProduto = new ProdutoNaoPerecivel(descricao, precoCusto, margemLucro);
-            } else if (tipo == 2) {
+               novoProduto = new ProdutoNaoPerecivel(descricao, precoCusto, margemLucro, quantidadeEmEstoque);
+            } 
+            
+            else if (tipo == 2) {
 
                 System.out.println("Data de validade (dd/mm/yyyy): ");
                 String dataValidade = teclado.nextLine();
                 DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-                novoProduto = new ProdutoPerecivel(descricao, precoCusto, margemLucro, LocalDate.parse(dataValidade, formato));
+                novoProduto = new ProdutoPerecivel(descricao, precoCusto, margemLucro, LocalDate.parse(dataValidade, formato), quantidadeEmEstoque);
 
             } else {
                 System.err.println("Opção inválida");
@@ -243,6 +249,32 @@ uma linha de texto com os dados de cada objeto Produto, escrevendo-a no arquivo.
 
     }
 
+        public static void excluirProduto() {
+        System.out.println("Exclusão de produto");
+        System.out.println("Insira o nome do produto que deseja excluir: ");
+        String descricao = teclado.nextLine();
+        int i;
+        Produto buscado = new Produto(descricao, 0.01, 0.01, 0);
+        boolean encontrado = false;
+
+        for (i = 0; i < quantosProdutos; i++) {
+            if (buscado.equals(produtosCadastrados[i])) {
+
+                produtosCadastrados[quantosProdutos - 1] = null;
+                quantosProdutos--;
+                encontrado = true;
+                for (int j = i; j < quantosProdutos - 1; j++) {
+                    produtosCadastrados[j] = produtosCadastrados[j + 1];
+                }
+                System.out.println("Produto excluído com sucesso");
+                break;
+            } else if (!encontrado) {
+                System.out.println("Produto não encontrado");
+            }
+        }
+
+    }
+
     public static void main(String[] args) throws Exception {
         teclado = new Scanner(System.in, Charset.forName("ISO-8859-2"));
         nomeArquivoDados = "dadosProdutos.csv";
@@ -259,6 +291,8 @@ uma linha de texto com os dados de cada objeto Produto, escrevendo-a no arquivo.
                     localizarProdutos();
                 case 3 ->
                     cadastrarProduto();
+                case 4 ->
+                    excluirProduto();
             }
             pausa();
         } while (opcao != 0);
