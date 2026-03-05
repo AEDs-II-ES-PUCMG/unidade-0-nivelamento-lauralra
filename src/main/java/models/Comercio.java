@@ -76,30 +76,27 @@ Instanciar o vetorProdutos com o tamanho necessário para acomodar todos os prod
 espaço reserva MAX_NOVOS_PRODUTOS. Após isso, ler uma após a outra o restante das linhas do arquivo,
 convertendo, a cada leitura de linha, seus dados em objetos do tipo Produto (utilizar o método
 criarDoTexto()). Cada objeto Produto instanciado será armazenado no vetorProdutos.*/
-
         Produto[] vetorProdutos;
         vetorProdutos = new Produto[MAX_NOVOS_PRODUTOS];
         int i;
 
         try {
             File arquivo = new File(nomeArquivoDados);
-            Scanner leitor = new Scanner (arquivo);
+            Scanner leitor = new Scanner(arquivo);
             // transforma a string de quantidade de produtos em int
             int n = Integer.parseInt(leitor.nextLine().trim());
             vetorProdutos = new Produto[n + MAX_NOVOS_PRODUTOS];
 
-            for (i=0; i<n; i++){
-                if (leitor.hasNextLine()){
+            for (i = 0; i < n; i++) {
+                if (leitor.hasNextLine()) {
                     String linha = leitor.nextLine();
                     vetorProdutos[i] = Produto.criarDoTexto(linha);
                     quantosProdutos++;
                 }
-            }        
+            }
             leitor.close();
-            
-        }
 
-        catch (Exception e){
+        } catch (Exception e) {
             System.err.println("Erro ao ler arquivo. Inicializando um novo vetor vazio");
             return new Produto[MAX_NOVOS_PRODUTOS];
         }
@@ -139,9 +136,8 @@ e imprimir na tela seus dados.*/
 
         boolean encontrado = false;
 
-
-        for (i=0; i<quantosProdutos; i++){
-            if (produtosCadastrados[i].equals(buscado)){
+        for (i = 0; i < quantosProdutos; i++) {
+            if (produtosCadastrados[i].equals(buscado)) {
                 System.out.println("Produto encontrado: " + produtosCadastrados[i].toString());
                 encontrado = true;
             }
@@ -188,10 +184,8 @@ incrementando a variável de controle da quantidade de produtos.*/
         try {
 
             if (tipo == 1) {
-               novoProduto = new ProdutoNaoPerecivel(descricao, precoCusto, margemLucro);
-            } 
-            
-            else if (tipo == 2) {
+                novoProduto = new ProdutoNaoPerecivel(descricao, precoCusto, margemLucro);
+            } else if (tipo == 2) {
 
                 System.out.println("Data de validade (dd/mm/yyyy): ");
                 String dataValidade = teclado.nextLine();
@@ -199,15 +193,11 @@ incrementando a variável de controle da quantidade de produtos.*/
 
                 novoProduto = new ProdutoPerecivel(descricao, precoCusto, margemLucro, LocalDate.parse(dataValidade, formato));
 
-            } 
-
-            else {
+            } else {
                 System.err.println("Opção inválida");
                 return;
             }
-        }
-
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
             return;
         }
@@ -234,22 +224,20 @@ parâmetro, percorrerá um por um todos os produtos existentes no vetor de produ
 uma linha de texto com os dados de cada objeto Produto, escrevendo-a no arquivo.*/
 
         try (PrintWriter escritor = new PrintWriter(new FileWriter(nomeArquivo))) {
-        
-        escritor.println(quantosProdutos);
 
-        for (int i = 0; i < quantosProdutos; i++) {
+            escritor.println(quantosProdutos);
 
-            Produto p = produtosCadastrados[i];
+            for (int i = 0; i < quantosProdutos; i++) {
 
-            if (p != null) {
-                escritor.println(p.gerarDadosTexto());
+                Produto p = produtosCadastrados[i];
+
+                if (p != null) {
+                    escritor.println(p.gerarDadosTexto());
+                }
             }
-        }
-        System.out.println("Produtos salvos com sucesso!");
-        
-        } 
-        
-        catch (IOException e) {
+            System.out.println("Produtos salvos com sucesso!");
+
+        } catch (IOException e) {
             System.err.println("Erro ao salvar: " + e.getMessage());
         }
 

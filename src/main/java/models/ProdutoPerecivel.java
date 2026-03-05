@@ -9,7 +9,7 @@ public class ProdutoPerecivel extends Produto {
 
     private int prazoDesconto = 7;
 
-    private LocalDate dataDeValidade;
+    protected LocalDate dataDeValidade;
 
     public ProdutoPerecivel(String descricao, double precoCusto, double margemLucro, LocalDate dataDeValidade) {
         super(descricao, precoCusto, margemLucro);
