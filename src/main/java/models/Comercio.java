@@ -93,7 +93,7 @@ criarDoTexto()). Cada objeto Produto instanciado será armazenado no vetorProdut
                     String linha = leitor.nextLine();
                     vetorProdutos[i] = Produto.criarDoTexto(linha);
                     quantosProdutos++;
-                    System.out.print("abbbbb");
+                    System.out.print("abbccccbbb");
                 }
             }        
             leitor.close();
