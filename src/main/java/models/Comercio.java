@@ -53,7 +53,7 @@ public class Comercio {
         return Integer.parseInt(teclado.nextLine());
     }
 
-    /**
+    /**if ()
      * Lê os dados de um arquivo texto e retorna um vetor de produtos. Arquivo
      * no formato N (quantiade de produtos) <br/>
      * tipo; descrição;preçoDeCusto;margemDeLucro;[dataDeValidade] <br/>
@@ -136,7 +136,7 @@ e imprimir na tela seus dados.*/
         System.out.println("Insira o nome do produto que deseja buscar: ");
         String descricao = teclado.nextLine();
 
-        Produto buscado = new Produto(descricao, 0.01, 0.01);
+        Produto buscado = new Produto(descricao, 0.01, 0.01, 0);
 
         boolean encontrado = false;
 
@@ -184,12 +184,16 @@ incrementando a variável de controle da quantidade de produtos.*/
         double margemLucro = teclado.nextDouble();
         teclado.nextLine();
 
+        System.out.print("Margem de lucro: ");
+        int quantidadeEmEstoque = teclado.nextInt();
+        teclado.nextLine();
+
         Produto novoProduto = null;
 
         try {
 
             if (tipo == 1) {
-               novoProduto = new ProdutoNaoPerecivel(descricao, precoCusto, margemLucro);
+               novoProduto = new ProdutoNaoPerecivel(descricao, precoCusto, margemLucro, quantidadeEmEstoque);
             } 
             
             else if (tipo == 2) {
@@ -198,7 +202,7 @@ incrementando a variável de controle da quantidade de produtos.*/
                 String dataValidade = teclado.nextLine();
                 DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-                novoProduto = new ProdutoPerecivel(descricao, precoCusto, margemLucro, LocalDate.parse(dataValidade, formato));
+                novoProduto = new ProdutoPerecivel(descricao, precoCusto, margemLucro, LocalDate.parse(dataValidade, formato), quantidadeEmEstoque);
 
             } 
 
